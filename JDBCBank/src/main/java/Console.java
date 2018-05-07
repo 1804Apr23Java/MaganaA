@@ -22,51 +22,48 @@ public class Console {
 	public static void menu(User user) {
 		Scanner sc = new Scanner(System.in);
 		
-		//download data
+		//download data of accounts balances
 		//
+		System.out.println("***Retrieving info***");
+		
+		
 		//
 		//
 		
-		
+		String answer = "";
+		while (!answer.equals("4")) {
 		user.displayMenu();
-		int answer;
-		try {
-		answer = sc.nextInt();
-		}
-		catch(Exception e) {
-			//download data
-			System.out.println("Invalid Input");
-			user.displayMenu();
-			answer = sc.nextInt();
-		}
-        switch(answer) {
-            case 0: //displays existing accounts and balances
+		answer = sc.nextLine();
+		
+        switch(answer.charAt(0)) {
+            case '0': //displays existing accounts and balances
             	user.displayAccounts();
             	System.out.println();
                 break;
 
-            case 1: //create an account
+            case '1': //create an account
             	user.addAccount();
                 break;
 
-            case 2: //delete an account only if empty
+            case '2': //delete an account only if empty
             	user.displayAccounts();
             	System.out.println("Which account would you like to delete?");
             	sc.nextInt();
                 break;
 
-            case 3: //add or withdraw from an account
-            	user.display(1);
+            case '3': //add or withdraw from an account
+            	
                 break;
 
-            case 4: //log out
+            case '4': //log out
             	System.out.println("Thank you for banking with Second National Bank \n We are second, so you can be first!");
+            	System.out.println("****************************\n");
             	startUp();
                 break;
             default:
-        }
 		
-		
+		}
+		}
 	}
 	
 
@@ -124,7 +121,6 @@ public class Console {
 			isValidUser = true; // poll the database for user name, return true if not found
 			System.out.println("Account being created, Please wait...");
 			uid.addNewUser(username, password);
-			sc.close();
 			menu( new User(username, password));
 
 			//mainUser.displayAccounts();
@@ -156,7 +152,6 @@ public class Console {
 				startUp(); // possible exception
 			}
 			
-			sc.close();
 			BankAccountDao bad = new BankAccountDaoImpl();
 			
 			menu( new User(username, password));

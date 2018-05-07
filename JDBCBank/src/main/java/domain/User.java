@@ -56,13 +56,13 @@ public class User {
 		System.out.println("2: Delete account");
 		System.out.println("3: Add/Withdraw from account");
 		System.out.println("4: logout");
-		
+		System.out.print("Please enter a number: ");
 		
 		
 		 
 	}
-	public void loadData() {
-		this.accounts = 
-	}
+	//public void loadData() {
+		
+	//}
 
 }
