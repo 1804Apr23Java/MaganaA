@@ -6,7 +6,7 @@ public class User {
 	
 	private String userName;
 	private String password;
-	private HashMap<String,Double> accounts; //Name of account and Balance
+	private HashMap<Integer,Float> accounts; //Name of account and Balance
 	//might not need these, just for upload
 	static int userID = 1;
 	static int bankAccountID = 1001;
@@ -19,7 +19,7 @@ public class User {
 	public User(String userName, String password){
 		this.userName = userName;
 		this.password = password;
-		this.accounts = new HashMap<String,Double>();
+		this.accounts = new HashMap<Integer,Float>();
 		//increment our counter java-side in place of sequences
 		/*userID++;
 		bankAccountID++;*/
@@ -39,14 +39,14 @@ public class User {
 		System.out.println("Accounts : Balance");
 		//uniform stars
 		System.out.println("******************\n");
-		for (String i : accounts.keySet()) {
-			System.out.println(i+ " : "+ accounts.get(i));
+		for (int i : this.accounts.keySet()) {
+			System.out.println("Acct "+i+ " : "+ this.accounts.get(i));
 		}
 	}
 	
-	public void addAccount()
+	public void setAccounts(HashMap<Integer,Float> accounts)
 	{
-		
+		this.accounts = accounts;
 	}
 	
 	public void displayMenu() {
@@ -61,8 +61,8 @@ public class User {
 		
 		 
 	}
-	//public void loadData() {
-		
-	//}
+	public String getUserame() {
+		return this.userName;
+	}
 
 }

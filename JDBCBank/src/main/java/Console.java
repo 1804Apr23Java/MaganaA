@@ -21,34 +21,39 @@ public class Console {
 	
 	public static void menu(User user) {
 		Scanner sc = new Scanner(System.in);
-		
-		//download data of accounts balances
-		//
-		System.out.println("***Retrieving info***");
-		
-		
-		//
-		//
-		
+	
 		String answer = "";
 		while (!answer.equals("4")) {
 		user.displayMenu();
 		answer = sc.nextLine();
 		
+    	BankAccountDao bad1 = new BankAccountDaoImpl();
         switch(answer.charAt(0)) {
             case '0': //displays existing accounts and balances
+    			System.out.println("***Retrieving info***\n");
+    			user.setAccounts(bad1.getAccountsByUser(user.getUserame()));
+            	bad1.getAccountsByUser(user.getUserame());
             	user.displayAccounts();
             	System.out.println();
                 break;
 
             case '1': //create an account
-            	user.addAccount();
+            	System.out.println("What would you like to name your account?");
+            	String accountName = sc.nextLine();
+            	bad1.addAccount(0.0F,accountName);
+            	System.out.println("New Account Created");
                 break;
 
             case '2': //delete an account only if empty
             	user.displayAccounts();
             	System.out.println("Which account would you like to delete?");
-            	sc.nextInt();
+            	int account_id = sc.nextInt();
+            	if(bad1.checkEmpty(account_id)) {
+            		bad1.deleteAccount(account_id);
+                	System.out.println("Acct " + account_id + " was deleted");
+            	}
+            	else
+            		System.out.println("Whoops! Withdraw money first.");
                 break;
 
             case '3': //add or withdraw from an account
@@ -153,10 +158,11 @@ public class Console {
 			}
 			
 			BankAccountDao bad = new BankAccountDaoImpl();
+			User you = new User(username, password);
+			System.out.println("***Retrieving info***\n");
+			you.setAccounts(bad.getAccountsByUser(username));
 			
-			menu( new User(username, password));
-			
-			
+			menu(you);
 			
 
 		} else {
