@@ -34,32 +34,65 @@ ORDER BY City;
 --2.3 INSERT INTO
 --Task – Insert two new records into Genre table 
 
-INSERT INTO Genre (Name)
-VALUES ('Boring');
+INSERT INTO Genre (GENREID,Name)
+VALUES (26,'Boring');
+/
+/*DELETE FROM Genre 
+WHERE GENREID= 26;
+/*/
+
+INSERT INTO Genre (GENREID,Name)
+VALUES (27,'EDM');
 /
 
-INSERT INTO Genre (Name)
-VALUES ('EDM');
+/*
+DELETE FROM Genre 
+WHERE GENREID= 27;
 /
-
+*/
 --Task – Insert two new records into Employee table
-INSERT INTO Employee (LastNameV, FirstName,Title)
-VALUES ('Magana','Andres','Boss');
+INSERT INTO Employee (EMPLOYEEID,LastName, FirstName,Title)
+VALUES (9,'Magana','Andres','Boss');
+/
+/*
+DELETE FROM Employee 
+WHERE EMPLOYEEID= 9;
+/
+*/
+
+INSERT INTO Employee (EMPLOYEEID,LastName, FirstName,Title)
+VALUES (10,'Higgins','Emily','Instructor');
 /
 
-INSERT INTO Employee (LastNameV, FirstName,Title)
-VALUES ('Higgins','Emily','Instructor');
+/*
+DELETE FROM Employee 
+WHERE EMPLOYEEID= 10;
 /
+*/
+
 
 --Task – Insert two new records into Customer table
 
-INSERT INTO Customer (FirstName, LastName, City)
-VALUES ('leroy', 'Jenkins', 'Tampa');
+INSERT INTO Customer (CUSTOMERID,FirstName, LastName, EMAIL)
+VALUES (60,'leroy', 'Jenkins', 'BOCA456@GMAIL.COM');
 /
 
-INSERT INTO Customer (FirstName, LastName, City)
-VALUES ('lenny', 'Simens', 'Springfield');
+/*
+DELETE FROM Customer 
+WHERE CUSTOMERID= 60;
 /
+*/
+
+INSERT INTO Customer (CUSTOMERID, FirstName, LastName, EMAIL)
+VALUES (61,'lenny', 'Simens', 'LAME@GMAIL.COM');
+/
+
+/*
+DELETE FROM Customer 
+WHERE CUSTOMERID= 61;
+/
+*/
+
 
 --2.4 UPDATE
 --Task – Update Aaron Mitchell in Customer table to Robert Walter
@@ -68,6 +101,12 @@ UPDATE Customer
 SET FirstName = 'Robert', LastName = 'Walter'
 WHERE FirstName = 'Aaron' AND LastName = 'Mitchell';
 /
+/*
+UPDATE Customer
+SET FirstName = 'Aaron', LastName = 'Mitchell'
+WHERE FirstName = 'Robert' AND LastName = 'Walter';
+/
+*/
 
 --Task – Update name of artist in the Artist table “Creedence Clearwater Revival” to “CCR”
 UPDATE Artist
@@ -92,7 +131,7 @@ WHERE Total BETWEEN 15 AND 50;
 
 --Task – Select all employees hired between 1st of June 2003 and 1st of March 2004
 SELECT * FROM Employee
-WHERE HireDate BETWEEN #06/01/2003# AND #03/01/2004#;
+WHERE HireDate BETWEEN '01-JUN-03' AND '01-MAR-04';
 /
 
 --2.7 DELETE
@@ -107,9 +146,10 @@ WHERE FirstName='Robert' AND LastName='Walter';
 --3.1 System Defined Functions
 --Task – Create a function that returns the current time.
 
-CREATE OR REPLACE CURRENTTIME
+CREATE OR REPLACE FUNCTION CURRENTTIME
 RETURN TIMESTAMP
-IS THISTIME TIMESTAMP
+IS 
+    THISTIME TIMESTAMP;
 BEGIN
 	THISTIME := CURRENT_TIMESTAMP;
 	RETURN THISTIME;
@@ -117,15 +157,15 @@ BEGIN
 END;
 /
 
-Task – create a function that returns the length of name in MEDIATYPE table
+--Task – create a function that returns the length of name in MEDIATYPE table
 
-CREATE OR REPLACE MEDIATYPE_NAME_LENGTH
-RETURN INT(10)
-IS MEDIA_LENGTH INT(10) 
+CREATE OR REPLACE FUNCTION MEDIATYPE_NAME_LENGTH
+RETURN INT
+IS MEDIA_LENGTH INT;
 BEGIN
-	MEDIA_LENGTH := SELECT MAX (LENGTH Name)
-					FROM MediaType;
-	RETURN MEDIA_LENGTH ;
+    SELECT MAX (LENGTH (NAME)) INTO MEDIA_LENGTH FROM MediaType;
+    RETURN MEDIA_LENGTH ;
+        
 END;
 /
 
@@ -133,24 +173,22 @@ END;
 --3.2 System Defined Aggregate Functions
 --Task – Create a function that returns the average total of all invoices 
 
-CREATE OR REPLACE INVOICE_AVG
-RETURN NUMBER(10,2)
-IS AVERAGE NUMBER(10,2)
+CREATE OR REPLACE FUNCTION INVOICE_AVG
+RETURN NUMBER
+IS AVERAGE NUMBER;
 BEGIN
-	AVERAGE := SELECT AVG( Total )
-				FROM Invoice;
+	SELECT AVG( Total ) INTO AVERAGE FROM Invoice;
 	RETURN AVERAGE ;
 END;
 /
 
 --Task – Create a function that returns the most expensive track
 
-CREATE OR REPLACE PRICY_TRACK
-RETURN NUMBER(10,2)
-IS PRICE INUMBER(10,2) 
+CREATE OR REPLACE FUNCTION PRICY_TRACK
+RETURN NUMBER
+IS PRICE NUMBER;
 BEGIN
-	PRICE := SELECT MAX (UnitPrice)
-					FROM Track;
+    SELECT MAX (UnitPrice) INTO PRICE FROM Track;
 	RETURN PRICE ;
 END;
 /
@@ -158,16 +196,15 @@ END;
 --3.3 User Defined Scalar Functions
 --Task – Create a function that returns the average price of invoiceline items in the invoiceline table
 
-CREATE OR REPLACE INVOICELINE_PRICE_AVG
-RETURN NUMBER(10,2)
-IS AVERAGE NUMBER(10,2)
+CREATE OR REPLACE FUNCTION INVOICELINE_PRICE_AVG
+RETURN NUMBER
+IS AVERAGE NUMBER;
 BEGIN
-	AVERAGE := SELECT AVG( UnitPrice )
-				FROM InvoiceLine;
+    SELECT AVG( UnitPrice ) INTO AVERAGE FROM InvoiceLine;
 	RETURN AVERAGE ;
 END;
-
-
+/
+/*
 3.4 User Defined Table Valued Functions
 Task – Create a function that returns all employees who are born after 1968.
 
@@ -196,22 +233,20 @@ In this section you will create various kinds of triggers that work when certain
 Task - Create an after insert trigger on the employee table fired after a new record is inserted into the table.
 Task – Create an after update trigger on the album table that fires after a row is inserted in the table
 Task – Create an after delete trigger on the customer table that fires after a row is deleted from the table.
-
+*/
 --7.0 JOINS
 --In this section you will be working with combining various tables through the use of joins. You will work with outer, inner, right, left, cross, and self joins.
 --7.1 INNER
 --Task – Create an inner join that joins customers and orders and specifies the name of the customer and the invoiceId.
 
-SELECT Customer
-FROM Invoice.InvoiceLineId , Customer.FirstName, Customer.LastName
-INNER JOIN Invoice ON 
-Customer.CustomerId = 
-Invoice.CustomerId;
+SELECT * 
+FROM Customer
+INNER JOIN Invoice ON Customer.CustomerId = Invoice.CustomerId;
 /
 --7.2 OUTER
 --Task – Create an outer join that joins the customer and invoice table, specifying the CustomerId, firstname, lastname, invoiceId, and total.
 
-SELECT Customer.CustomerId, Customer.FirstName, Customer.LastName, Invoice.InvoiceLineId , Invoice.Total
+SELECT *
 FROM Customer
 FULL OUTER JOIN Invoice ON Customer.CustomerId = Invoice.CustomerId;
 /
@@ -227,9 +262,9 @@ RIGHT JOIN Artist ON Album.ArtistId = Artist.ArtistId;
 --Task – Create a cross join that joins album and artist and sorts by artist name in ascending order.
 
 SELECT * 
-ORDER BY Artist.Name
 FROM Album 
-CROSS JOIN Artist;
+CROSS JOIN Artist
+ORDER BY Artist.Name;
 /
 --7.5 SELF
 --Task – Perform a self-join on the employee table, joining on the reportsto column.
