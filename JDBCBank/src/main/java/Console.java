@@ -47,7 +47,7 @@ public class Console {
             case '2': //delete an account only if empty
             	user.displayAccounts();
             	System.out.println("Which account would you like to delete?");
-            	int account_id = sc.nextInt();
+            	int account_id = Integer.parseInt(sc.nextLine());
             	if(bad1.checkEmpty(account_id)) {
             		bad1.deleteAccount(account_id);
                 	System.out.println("Acct " + account_id + " was deleted");
@@ -57,7 +57,7 @@ public class Console {
                 break;
 
             case '3': //add or withdraw from an account
-            	
+            	System.out.println("Please come in person");
                 break;
 
             case '4': //log out

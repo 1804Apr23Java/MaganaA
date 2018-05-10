@@ -27,7 +27,6 @@ public class BankAccountDaoImpl implements BankAccountDao {
 			ResultSet rs = pstmt.executeQuery();
 
 			if (rs.next()) {
-				System.out.println("Does it go here?");
 				int bank_id = rs.getInt("BANK_ACCOUNT_ID");
 				float balance = rs.getFloat("ACCOUNT_BALANCE");
 				accounts.put(bank_id, balance);
@@ -58,7 +57,7 @@ public class BankAccountDaoImpl implements BankAccountDao {
 
 			String sql = "INSERT INTO BANK_ACCOUNT (BANK_ACCOUNT_NAME, ACCOUNT_BALANCE) VALUES(?,?)";
 			String sql2 = "SELECT BANK_ACCOUNT_ID FROM BANK_ACCOUNT WHERE BANK_ACCOUNT_NAME = ?";
-			String sql3 = "INSERT INTO USER_INFO(USERNAME, BANK_ACCOUNT_ID) VALUES (?,?)";
+			String sql3 = "INSERT INTO USER_INFO (USERNAME, BANK_ACCOUNT_ID) VALUES (?,?)";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, accountName);
 			pstmt.setFloat(2, accountBalance);
@@ -69,14 +68,12 @@ public class BankAccountDaoImpl implements BankAccountDao {
 		
 			if(rs2.next()) {
 				bank_account_id = rs2.getInt("BANK_ACCOUNT_ID");
+				System.out.println(bank_account_id);
 			}
-			pstmt3 = conn.prepareStatement(sql3);
+			/*pstmt3 = conn.prepareStatement(sql3);
 			pstmt3.setString(1, accountName);
-			pstmt3.setInt(2, bank_account_id);
-
-			pstmt.executeQuery();
-			
-
+			pstmt3.setInt(2, bank_account_id);			
+			pstmt3.executeQuery();*/
 			conn.close();
   
 		} catch (SQLException e) {
@@ -105,14 +102,14 @@ public class BankAccountDaoImpl implements BankAccountDao {
 			pstmt2 = conn.prepareStatement(sql2);
 			pstmt.setInt(1, account_id);
 			pstmt2.setInt(1,account_id);
-			ResultSet rs = pstmt.executeQuery();
-			if(rs.next()) {
+			/*ResultSet rs = pstmt.executeQuery();
+			if(rs.next()) {*/
 				ResultSet rs2 = pstmt2.executeQuery();
 				if(rs2.next()) {
 					deleted = true;
 
 				}
-			}	
+			//}	
 
 			conn.close();
 			
@@ -136,6 +133,7 @@ public class BankAccountDaoImpl implements BankAccountDao {
 			Connection conn = ConnectionUtil.getConnectionFromFile(filename);
 			String sql = "SELECT ACCOUNT_BALANCE FROM BANK_ACCOUNT WHERE BANK_ACCOUNT_ID = ?";
 			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, account_id);
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next()) {
 				float account_balance = rs.getFloat("ACCOUNT_BALANCE");
